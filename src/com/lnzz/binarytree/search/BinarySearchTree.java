@@ -3,6 +3,8 @@ package com.lnzz.binarytree.search;
 import com.lnzz.util.binarytree.BinaryTreeInfo;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * ClassName：BinarySearchTree
@@ -39,7 +41,8 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     }
 
     public void clear() {
-
+        root = null;
+        size = 0;
     }
 
     public void add(E element) {
@@ -83,6 +86,76 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
     public boolean contains(E element) {
         return false;
+    }
+
+    /**
+     * 前序遍历
+     */
+    public void prevOrderTraversal() {
+        prevOrderTraversal(root);
+    }
+
+    private void prevOrderTraversal(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        System.out.println(node.element);
+        prevOrderTraversal(node.left);
+        prevOrderTraversal(node.right);
+    }
+
+    /**
+     * 中序遍历
+     */
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
+    }
+
+    private void inOrderTraversal(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        inOrderTraversal(node.left);
+        System.out.println(node.element);
+        inOrderTraversal(node.right);
+    }
+
+    /**
+     * 后序遍历
+     */
+    public void postOrderTraversal() {
+        postOrderTraversal(root);
+    }
+
+    private void postOrderTraversal(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        postOrderTraversal(node.left);
+        postOrderTraversal(node.right);
+        System.out.println(node.element);
+    }
+
+    /**
+     * 层序遍历
+     */
+    public void levelOrderTraversal() {
+        if (root == null) {
+            return;
+        }
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            Node<E> node = queue.poll();
+            System.out.println(node.element);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
     }
 
     /**

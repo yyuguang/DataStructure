@@ -14,7 +14,7 @@ public class BinarySearchTreeTest {
 
     public static void main(String[] args) {
         Integer data[] = new Integer[]{
-                7, 4, 9, 2, 5, 8, 11, 3,12,1
+                7, 4, 9, 2, 5, 8, 11, 3, 12, 1
         };
 
         BinarySearchTree<Integer> bst = new BinarySearchTree<>();
@@ -23,5 +23,7 @@ public class BinarySearchTreeTest {
         }
 
         BinaryTrees.print(bst);
+        System.out.println();
+        bst.levelOrderTraversal();
     }
 }
