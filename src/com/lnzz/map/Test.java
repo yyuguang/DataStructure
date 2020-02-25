@@ -4,6 +4,7 @@ import com.lnzz.map.model.Key;
 import com.lnzz.map.model.SubKey1;
 import com.lnzz.map.model.SubKey2;
 import com.lnzz.util.Asserts;
+import com.lnzz.util.TimeTool;
 import com.lnzz.util.binarytree.file.FileInfo;
 import com.lnzz.util.binarytree.file.Files;
 
@@ -17,48 +18,44 @@ import com.lnzz.util.binarytree.file.Files;
  */
 public class Test {
 
+    static void test1Map(Map<String, Integer> map, String[] words) {
+        TimeTool.check(map.getClass().getName(), new TimeTool.Task() {
+            @Override
+            public void execute() {
+                for (String word : words) {
+                    Integer count = map.get(word);
+                    count = count == null ? 0 : count;
+                    map.put(word, count + 1);
+                }
+                System.out.println(map.size()); // 17188
+
+                int count = 0;
+                for (String word : words) {
+                    Integer i = map.get(word);
+                    count += i == null ? 0 : i;
+                    map.remove(word);
+                }
+                Asserts.test(count == words.length);
+                Asserts.test(map.size() == 0);
+            }
+        });
+    }
+
     static void test1() {
-        Map<String, Integer> map = new TreeMap<>();
-        map.put("c", 2);
-        map.put("a", 5);
-        map.put("b", 6);
-        map.put("a", 8);
-
-        map.traversal(new Map.Visitor<String, Integer>() {
-            @Override
-            public boolean visit(String key, Integer value) {
-                System.out.println(key + "_" + value);
-                return false;
-            }
-        });
-    }
-
-    static void test2() {
-        FileInfo fileInfo = Files.read("D:\\1.project\\03.idea works\\DataStructure\\src\\com\\lnzz",
-                new String[]{"java"});
-
-        System.out.println("文件数量：" + fileInfo.getFiles());
-        System.out.println("代码行数：" + fileInfo.getLines());
+        String filepath = "C:\\Users\\Desktop\\src\\java\\util\\concurrent";
+        FileInfo fileInfo = Files.read(filepath, null);
         String[] words = fileInfo.words();
-        System.out.println("单词数量：" + words.length);
 
-        Map<String, Integer> map = new TreeMap<>();
-        for (int i = 0; i < words.length; i++) {
-            Integer count = map.get(words[i]);
-            count = (count == null) ? 1 : (count + 1);
-            map.put(words[i], count);
-        }
+        System.out.println("总行数：" + fileInfo.getLines());
+        System.out.println("单词总数：" + words.length);
+        System.out.println("-------------------------------------");
 
-        map.traversal(new Map.Visitor<String, Integer>() {
-            @Override
-            public boolean visit(String key, Integer value) {
-                System.out.println(key + "_" + value);
-                return false;
-            }
-        });
+        test1Map(new TreeMap<>(), words);
+        test1Map(new HashMap<>(), words);
+        test1Map(new LinkedHashMap<>(), words);
     }
 
-    static void test3(HashMap<Object, Integer> map) {
+    static void test2(HashMap<Object, Integer> map) {
         for (int i = 1; i <= 20; i++) {
             map.put(new Key(i), i);
         }
@@ -73,7 +70,7 @@ public class Test {
         Asserts.test(map.get(new Key(8)) == 8);
     }
 
-    static void test4(HashMap<Object, Integer> map) {
+    static void test3(HashMap<Object, Integer> map) {
         map.put(null, 1); // 1
         map.put(new Object(), 2); // 2
         map.put("jack", 3); // 3
@@ -94,7 +91,7 @@ public class Test {
         Asserts.test(map.containsValue(1) == false);
     }
 
-    static void test5(HashMap<Object, Integer> map) {
+    static void test4(HashMap<Object, Integer> map) {
         map.put("jack", 1);
         map.put("rose", 2);
         map.put("jim", 3);
@@ -123,13 +120,13 @@ public class Test {
         map.traversal(new Map.Visitor<Object, Integer>() {
             @Override
             public boolean visit(Object key, Integer value) {
-//                System.out.println(key + "_" + value);
+                System.out.println(key + "_" + value);
                 return false;
             }
         });
     }
 
-    static void test6(HashMap<Object, Integer> map) {
+    static void test5(HashMap<Object, Integer> map) {
         for (int i = 1; i <= 20; i++) {
             map.put(new SubKey1(i), i);
         }
@@ -140,9 +137,19 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        test3(new HashMap<>());
-        test4(new HashMap<>());
-        test5(new HashMap<>());
-        test6(new HashMap<>());
+//		test1();
+//		test2(new HashMap<>());
+//		test3(new HashMap<>());
+//		test4(new HashMap<>());
+//		test5(new HashMap<>());
+
+        test1();
+        test2(new LinkedHashMap<>());
+        test3(new LinkedHashMap<>());
+        test4(new LinkedHashMap<>());
+        test5(new LinkedHashMap<>());
+
+        java.util.HashMap<String, String> map;
+        java.util.LinkedHashMap<String, String> map2;
     }
 }
