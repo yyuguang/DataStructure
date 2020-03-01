@@ -1,5 +1,7 @@
 package com.lnzz.queue;
 
+import com.lnzz.queue.model.Person;
+
 /**
  * ClassName：Test
  *
@@ -71,9 +73,21 @@ public class Test {
         }
     }
 
+    static void test4(){
+        PriorityQueue<Person> queue = new PriorityQueue<>();
+        queue.enQueue(new Person("Jack", 2));
+        queue.enQueue(new Person("Rose", 10));
+        queue.enQueue(new Person("Jake", 5));
+        queue.enQueue(new Person("James", 15));
+
+        while (!queue.isEmpty()) {
+            System.out.println(queue.deQueue());
+        }
+
+    }
+
     public static void main(String[] args) {
-        test2();
-        test3();
+        test4();
     }
 
 }
