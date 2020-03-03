@@ -4,6 +4,7 @@ import com.lnzz.util.binarytree.BinaryTreeInfo;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * ClassName：BinaryTree
@@ -93,6 +94,32 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     /**
+     * 前序迭代遍历，非递归
+     *
+     * @param visitor
+     */
+    public void prevOrderIteration(Visitor<E> visitor) {
+        if (visitor == null || root == null) {
+            return;
+        }
+        Stack<Node<E>> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node<E> node = stack.pop();
+            // 访问node节点
+            if (visitor.visit(node.element)) {
+                return;
+            }
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        }
+    }
+
+    /**
      * 中序遍历（改进，允许外界遍历二叉树）
      *
      * @param visitor
@@ -117,6 +144,36 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     /**
+     * 中序迭代遍历，非递归
+     *
+     * @param visitor
+     */
+    public void inOrderIteration(Visitor<E> visitor) {
+        if (visitor == null || root == null) {
+            return;
+        }
+        Node<E> node = root;
+        Stack<Node<E>> stack = new Stack<>();
+        while (true) {
+            if (node != null) {
+                stack.push(node);
+                // 向左走
+                node = node.left;
+            } else if (stack.isEmpty()) {
+                return;
+            } else {
+                node = stack.pop();
+                // 访问node节点
+                if (visitor.visit(node.element)) {
+                    return;
+                }
+                // 让右节点进行中序遍历
+                node = node.right;
+            }
+        }
+    }
+
+    /**
      * 后序遍历（改进，允许外界遍历二叉树）
      *
      * @param visitor
@@ -138,6 +195,38 @@ public class BinaryTree<E> implements BinaryTreeInfo {
             return;
         }
         visitor.stop = visitor.visit(node.element);
+    }
+
+    /**
+     * 后序迭代遍历，非递归
+     *
+     * @param visitor
+     */
+    public void postOrderIteration(Visitor<E> visitor) {
+        if (visitor == null || root == null) {
+            return;
+        }
+        // 记录上一次弹出访问的节点
+        Node<E> prev = null;
+        Stack<Node<E>> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node<E> top = stack.peek();
+            if (top.isLeaf() || (prev != null && prev.parent == top)) {
+                prev = stack.pop();
+                // 访问节点
+                if (visitor.visit(prev.element)) {
+                    return;
+                }
+            } else {
+                if (top.right != null) {
+                    stack.push(top.right);
+                }
+                if (top.left != null) {
+                    stack.push(top.left);
+                }
+            }
+        }
     }
 
     /**
