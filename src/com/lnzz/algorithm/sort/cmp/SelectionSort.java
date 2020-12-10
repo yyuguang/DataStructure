@@ -1,5 +1,6 @@
-package com.lnzz.algorithm.sort;
+package com.lnzz.algorithm.sort.cmp;
 
+import com.lnzz.algorithm.sort.Sort;
 import com.lnzz.util.Integers;
 import com.lnzz.util.TimeTool;
 
@@ -11,7 +12,7 @@ import com.lnzz.util.TimeTool;
  * @date 2020/12/9 15:36
  * @description 选择排序
  */
-public class SelectionSort extends Sort {
+public class SelectionSort<E extends Comparable<E>> extends Sort<E> {
     @Override
     protected void sort() {
         for (int end = array.length - 1; end > 0; end--) {
