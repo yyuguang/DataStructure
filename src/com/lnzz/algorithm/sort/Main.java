@@ -19,11 +19,14 @@ public class Main {
     public static void main(String[] args) {
         Integer[] array = Integers.random(10000, 1, 20000);
         testSorts(array,
-                new BubbleSort1(),
-                new BubbleSort2(),
+//                new BubbleSort1(),
+//                new BubbleSort2(),
                 new HeapSort(),
                 new SelectionSort(),
-                new BubbleSort3());
+                new BubbleSort3(),
+                new InsertionSort1(),
+                new InsertionSort2(),
+                new InsertionSort3());
     }
 
     static void testSorts(Integer[] array, Sort... sorts) {
